@@ -1,0 +1,6 @@
+# ninja log v5
+8	578	6999534749113073	CMakeFiles/project3.dir/Relation.cpp.obj	b238432be6744ded
+8	338	6999403581164242	CMakeFiles/project3.dir/Scheme.cpp.obj	e6644e41deb21c3b
+3	316	6999416325252885	CMakeFiles/project3.dir/Tuple.cpp.obj	79c52c27a3bf7e58
+3	554	6999534748886144	CMakeFiles/project3.dir/main.cpp.obj	7daef799ec2f9628
+578	682	6999534750138016	project3.exe	5c4105b7e0e80f60
