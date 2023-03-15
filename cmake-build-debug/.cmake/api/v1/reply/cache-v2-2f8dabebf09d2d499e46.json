@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/lukes/Desktop/School/winter2023/cs236/project3/cmake-build-debug"
+			"value" : "c:/Users/lukes/Desktop/School/winter2023/cs236/DatalogProject/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -623,7 +623,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/lukes/Desktop/School/winter2023/cs236/project3"
+			"value" : "C:/Users/lukes/Desktop/School/winter2023/cs236/DatalogProject"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1239,7 +1239,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/lukes/Desktop/School/winter2023/cs236/project3/cmake-build-debug"
+			"value" : "C:/Users/lukes/Desktop/School/winter2023/cs236/DatalogProject/cmake-build-debug"
 		},
 		{
 			"name" : "project3_IS_TOP_LEVEL",
@@ -1263,7 +1263,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/lukes/Desktop/School/winter2023/cs236/project3"
+			"value" : "C:/Users/lukes/Desktop/School/winter2023/cs236/DatalogProject"
 		}
 	],
 	"kind" : "cache",

@@ -3,7 +3,7 @@
 
 string Parameter::toString() {
     if(isString){
-        return ("\"" + value + "\"");
+        return value;//("\"" + value + "\"");
     }
     return value;
 }

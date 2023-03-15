@@ -19,7 +19,7 @@ bool Tuple::operator<(const Tuple t) const {
 string Tuple::toString(const Scheme &scheme) const {
     const Tuple& tuple = *this;
     stringstream out;
-    for (int i = 0; i< scheme.size(); ++i){
+    for (size_t i = 0; i< scheme.size(); ++i){
         out << scheme.at(i) << "=" << tuple.at(i);
         if (i != scheme.size() - 1) out << ", ";
     }

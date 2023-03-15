@@ -16,8 +16,9 @@ void Parser::advanceToken() {
     tokens.erase(tokens.begin());
 }
 
-void Parser::parse() {
+DatalogProgram Parser::parse() {
     datalogProgram();
+    return d;
 }
 
 void Parser::match(TokenType t) {
@@ -26,7 +27,7 @@ void Parser::match(TokenType t) {
     else throw tokens.at(0);
 }
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-void Parser::datalogProgram() {
+void Parser::datalogProgram(){
     try{
         match(SCHEMES);
         match(COLON);
@@ -49,7 +50,8 @@ void Parser::datalogProgram() {
         cout << "Failure!\n  " << "(" << badToken.typeName() << ","<< "\"" << badToken.getValue() << "\"" << ","<< badToken.getLine() << ")\n";
         return;
     }
-    cout << d.toString();
+    //cout << d.toString();
+    return;// d;
 }
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 void Parser::schemeList() {
@@ -108,10 +110,10 @@ void Parser::fact() {
         match(ID);
         match(LEFT_PAREN);
         param.value = tokenValue();
-        //param.isString = true;
+        //param.isConstant = true;
         p.parameters.push_back(param);
         d.domain.insert(param.toString());
-        //param.isString = false;
+        //param.isConstant = false;
         match(STRING);
         stringList();
         match(RIGHT_PAREN);
@@ -205,7 +207,9 @@ void Parser::idList() {
 void Parser::parameter() {
     if (tokenType() == STRING){
         param.value = tokenValue();
+        param.isString = true;
         p.parameters.push_back(param);
+        param.isString = false;
         match(STRING);
     }
     if (tokenType() == ID) {

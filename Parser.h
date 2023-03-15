@@ -31,7 +31,7 @@ class Parser {
     TokenType tokenType() const;
     string tokenValue();
     void advanceToken();
-    void parse();
+    DatalogProgram parse();
     void match(TokenType t);
 
     void datalogProgram();

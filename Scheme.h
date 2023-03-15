@@ -4,9 +4,6 @@
 #include <sstream>
 using namespace std;
 class Scheme {
-private:
-
-    vector<string> names;
 
 public:
 
@@ -21,4 +18,5 @@ public:
     }
 
     // TODO: add more delegation functions as needed
+    vector<string> names;
 };

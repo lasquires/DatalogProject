@@ -1,28 +1,42 @@
 #!/bin/bash
 
-# script for project 3 example tests
+# script for project 3 pass-off tests
 
 program="project3"
-numbers="30 33 35 36 37 61 62"
-testdir="project3-tests"
+
+buckets="20 40 60 80 100"
+
+numbers_20="21 22 24"
+numbers_40="41 42"
+numbers_60="61 62"
+numbers_80="81 82"
+numbers_100="101 102 104 105"
+
+testdir="project3-passoff"
 diffopts=" -a -i -E -Z -b -w -B "  # ignore whitespace
 
 g++ -Wall -Werror -std=c++17 -g *.cpp -o $program
 
-for number in $numbers ; do
- 
-    echo "Running input" $number
+for bucket in $buckets ; do
 
-    inputfile=$testdir/in$number.txt
-    answerfile=$testdir/out$number.txt
-    outputfile=actual$number.txt
+    echo Bucket $bucket
+    eval numbers=\$numbers_$bucket
 
-    ./$program $inputfile > $outputfile
+    for number in $numbers ; do
 
-    diff $diffopts $answerfile $outputfile || echo "diff failed on test" $number
+	echo "Running input" $number
 
-    rm $outputfile
+	inputfile=$testdir/$bucket/input$number.txt
+	answerfile=$testdir/$bucket/answer$number.txt
+	outputfile=actual$number.txt
 
+	./$program $inputfile > $outputfile
+
+	diff $diffopts $answerfile $outputfile || echo "diff failed on test" $number
+
+	rm $outputfile
+
+    done
 done
 
 rm $program
