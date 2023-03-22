@@ -64,3 +64,52 @@ set<Tuple> Relation::getTuples() {
 string Relation::getName() {
     return name;
 }
+
+Relation Relation::join(const Relation &right) {
+    const Relation& left = *this;
+    Relation result(name, scheme);
+     for (const Tuple& leftTuple : left.tuples){
+         cout << "left tuple: " << leftTuple.toString(left.scheme) << endl;
+         for (const Tuple& rightTuple : right.tuples){
+             cout << "left tuple: " << rightTuple.toString(right.scheme) << endl;
+         }
+     }
+     //join schemes
+     //join tuples
+
+
+    return result;
+}
+
+
+
+
+
+Tuple Relation::joinTuple(Tuple leftTuple, Tuple rightTuple) {
+    /* Tuple t;
+     * if joinable();
+     * add tuple values that need to be joined
+(do same for join schemes)
+     */
+}
+
+bool Relation::joinable(const Scheme &leftScheme, const Scheme &rightScheme, const Tuple &leftTuple,
+                        const Tuple &rightTuple) {
+    bool canJoin = true;
+    for (unsigned leftIndex = 0; leftIndex < leftScheme.size(); leftIndex++) {
+        const string& leftName = leftScheme.at(leftIndex);
+        const string& leftValue = leftTuple.at(leftIndex);
+        cout << "left name: " << leftName << " value: " << leftValue << endl;
+        for (unsigned rightIndex = 0; rightIndex < rightScheme.size(); rightIndex++) {
+            const string& rightName = rightScheme.at(rightIndex);
+            const string& rightValue = rightTuple.at(rightIndex);
+            cout << "right name: " << rightName << " value: " << rightValue << endl;
+            if (rightName == leftName && rightValue != leftValue) {
+
+                canJoin = false;
+            }
+        }
+    }
+    return canJoin;
+
+}
