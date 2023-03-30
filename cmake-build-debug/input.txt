@@ -1,15 +1,32 @@
+
+
+# backward rule order
+
+
 Schemes:
-  SK(A,B)
+
+  a(x)
+  b(y)
+  c(z)
+  d(w)
+
 Facts:
-  SK('a','c').
-  SK('b','c').
-  SK('b','b').
-  SK('b','c').
+
+  a('1').
+  a('2').
+  a('4').
+
 Rules:
 
+  d(w) :- c(w).
+  c(z) :- b(z).
+  b(y) :- a(y).
+
 Queries:
-  SK(X,'c')?
-  SK('b','c')?
-  SK(X,X)?
-  SK(X,Y)?
-  SK('c','c')?
+
+  a(x)?
+  b(y)?
+  c(z)?
+  d(z)?
+
+

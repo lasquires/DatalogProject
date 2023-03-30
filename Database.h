@@ -7,6 +7,6 @@ public:
 //take in name:relation
     void addRelation(string name, Relation relation);
     map<string, Relation> getDatabase();
-
+    int getDatabaseSize();
     map <string, Relation> relationDict;
 };

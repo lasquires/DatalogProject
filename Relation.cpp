@@ -6,10 +6,10 @@ void Relation::addTuple(const Tuple &tuple) {
 
 string Relation::toString() const {
     stringstream out;
-    if (scheme.size() == 0) return "";
+    if (scheme.size() == 0) return "";  //this needs to be the scheme of the original
     if (tuples.empty()) return "";
     for (auto& tuple : tuples)
-        out << tuple.toString(scheme) << endl;
+        out << "  " << tuple.toString(scheme) << endl;
     return out.str();
 }
 
@@ -36,8 +36,8 @@ Relation Relation::project(const vector<int>& cols) {//cols is indeces of column
     vector<string> newScheme;
     for(int i : cols)
         newScheme.push_back(scheme.at(i));  //SN
-    scheme = newScheme;                       //scheme = SN
-
+    //scheme = newScheme;                       //scheme = SN
+    result.scheme = newScheme;
     //new tuples/rows
     set<Tuple> newTuples;
     for (auto tuple : tuples) {
@@ -46,7 +46,8 @@ Relation Relation::project(const vector<int>& cols) {//cols is indeces of column
             newTuple.values.push_back((tuple.at(i)));
         newTuples.insert(newTuple);
     }
-    tuples = newTuples;
+    //tuples = newTuples;
+    result.tuples = newTuples;
     return result;
 }
 
@@ -65,27 +66,93 @@ string Relation::getName() {
     return name;
 }
 
-Relation Relation::join(const Relation &right) {
+Relation Relation::join(const Relation &right) {   //joining 'right' relation to whatever relation I am in ('left')
     const Relation& left = *this;
-    Relation result(name, scheme);
+    //cout << "in join()" << endl;
+    //Relation r(name, scheme);
+    //'left' relation
+    //combine schemes
+    Scheme combinedScheme = left.scheme;
+    for (const auto& rightName : right.scheme.names){
+        bool inCombined = false;
+        for (const auto& leftName : left.scheme.names){//TODO possible bug here
+            if (rightName == leftName) inCombined = true;
+        }
+        if (!inCombined) combinedScheme.names.push_back(rightName);
+    }
+    string combinedName = "Placeholder for Rule";//TODO, change later
+    Relation combinedRelation(combinedName, combinedScheme);//'cn' SnAPcG
+
      for (const Tuple& leftTuple : left.tuples){
-         cout << "left tuple: " << leftTuple.toString(left.scheme) << endl;
+         //cout << "left tuple: " << leftTuple.toString(left.scheme) << endl;
          for (const Tuple& rightTuple : right.tuples){
-             cout << "left tuple: " << rightTuple.toString(right.scheme) << endl;
+             //cout << "right tuple: " << rightTuple.toString(right.scheme) << endl;
+             if (joinable(left.scheme, right.scheme, leftTuple, rightTuple)){
+                 Tuple combinedTuple = joinTuple(left.scheme, right.scheme, leftTuple, rightTuple, combinedScheme.names);
+                 combinedRelation.tuples.insert(combinedTuple);
+             }
          }
      }
      //join schemes
      //join tuples
-
-
-    return result;
+    //call project here
+//    string newName;
+//    for (auto cols: combinedScheme.names)  newName+=cols;
+//    combinedRelation.name = newName;
+    //combinedRelation.project()
+    //call union
+    //cout << combinedRelation.toString() << endl;
+    return combinedRelation;
 }
 
 
 
 
 
-Tuple Relation::joinTuple(Tuple leftTuple, Tuple rightTuple) {
+Tuple Relation::joinTuple(Scheme leftScheme, Scheme rightScheme,Tuple leftTuple, Tuple rightTuple, vector<string> schemeNames) {
+    Tuple t;//TODO if bugs with multiple values in a tuple under different columns...
+//    for (auto name : schemeNames){
+//        if
+//    }
+
+    //t = leftTuple;
+    for (auto name : schemeNames) {
+        for (size_t i = 0; i < leftScheme.names.size(); ++i) {
+            if (leftScheme.names.at(i) == name){
+                t.values.push_back(leftTuple.at(i));
+            }
+        }
+    }
+//    for (auto name : schemeNames){
+//        for (auto leftName : leftScheme.names){
+//            for (size_t i = 0; i < rightScheme.names.size(); ++i) {
+//                if (rightScheme.names.at(i) == leftName)
+//            }
+//        }
+//    }
+    for (size_t i = 0; i < rightScheme.names.size(); ++i) {
+        bool inJoinedTuple = false;
+        for (auto name : schemeNames)
+            for (auto leftName : leftScheme.names){
+                if (rightScheme.names.at(i) == name){
+                    if (rightScheme.names.at(i) == leftName)
+                        inJoinedTuple = true;
+                }
+            }
+        if (!inJoinedTuple)
+            t.values.push_back(rightTuple.at(i));
+    }
+
+
+//    for (auto rightVal : rightTuple.values){
+//        bool inJoinedTuple = false;
+//        for (auto leftVal : leftTuple.values){
+//            if (rightVal == leftVal) inJoinedTuple = true;
+//        }
+//        if (!inJoinedTuple)
+//            t.values.push_back(rightVal);
+//    }
+    return t;
     /* Tuple t;
      * if joinable();
      * add tuple values that need to be joined
@@ -99,17 +166,36 @@ bool Relation::joinable(const Scheme &leftScheme, const Scheme &rightScheme, con
     for (unsigned leftIndex = 0; leftIndex < leftScheme.size(); leftIndex++) {
         const string& leftName = leftScheme.at(leftIndex);
         const string& leftValue = leftTuple.at(leftIndex);
-        cout << "left name: " << leftName << " value: " << leftValue << endl;
+        //cout << "left name: " << leftName << " value: " << leftValue << endl;
         for (unsigned rightIndex = 0; rightIndex < rightScheme.size(); rightIndex++) {
             const string& rightName = rightScheme.at(rightIndex);
             const string& rightValue = rightTuple.at(rightIndex);
-            cout << "right name: " << rightName << " value: " << rightValue << endl;
+            //cout << "right name: " << rightName << " value: " << rightValue << endl;
             if (rightName == leftName && rightValue != leftValue) {
-
                 canJoin = false;
             }
         }
     }
     return canJoin;
 
+}
+
+bool Relation::unionize(Relation r) {
+    bool tupleAdded = false;
+//    auto it = db.relationDict.find(r.name);
+
+//    if (it != db.relationDict.end())
+        for (auto tuple : r.getTuples()) {
+            if(tuples.insert(tuple).second){//if a ble to insert tuple into tuples-> true
+                cout << "  " << tuple.toString(scheme) << endl;
+                tupleAdded = true;
+
+            }
+//            db.relationDict.at(r.name).addTuple(tuple);
+            //tuplesAdded = true;
+        }
+    //Scheme s = it->second.scheme;
+    //r.scheme = it->second.scheme;
+    //Scheme ss = r.scheme;
+    return tupleAdded;
 }

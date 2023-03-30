@@ -6,11 +6,13 @@
 class Relation {
 private:
 
-    string name;
-    Scheme scheme;
     set<Tuple> tuples;
 
 public:
+    string name;
+    Scheme scheme;
+
+
     Relation(const string& name, const Scheme& scheme)
             : name(name), scheme(scheme) { }
 
@@ -23,9 +25,16 @@ public:
     Relation project(const vector<int>& cols);
     Relation rename(vector<string> cols);
     Relation join(const Relation& right);
-    Tuple joinTuple(Tuple leftTuple, Tuple rightTuple);
+    Tuple joinTuple(Scheme leftScheme,
+                    Scheme rightScheme,
+                    Tuple leftTuple,
+                    Tuple rightTuple,
+                    vector<string> schemeNames);
     static bool joinable(const Scheme& leftScheme,
                          const Scheme& rightScheme,
                          const Tuple& leftTuple,
                          const Tuple& rightTuple);
+    bool unionize(Relation r);
+
+
 };
