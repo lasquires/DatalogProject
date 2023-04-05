@@ -1,6 +1,7 @@
 #pragma once
 #include "DatalogProgram.h"
 #include "Database.h"
+#include "Graph.h"
 //#include "Predicate.h"
 class Interpreter {
 private:
@@ -23,6 +24,11 @@ public:
     //string tostring();
     Relation unionize(Relation r);
     Predicate getFact (Rule r);
+    static Graph makeGraph(const vector<Rule>& rules);
+
+
+
+
 
 
 };

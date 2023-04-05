@@ -2,6 +2,7 @@
 // Created by lukes on 3/7/2023.
 //
 
+#pragma once
 #include "Tuple.h"
 
 unsigned Tuple::size() const {

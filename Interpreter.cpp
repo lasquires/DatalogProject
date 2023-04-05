@@ -133,3 +133,26 @@ Relation Interpreter::unionize(Relation r) {
             tuplesAdded = true;
     return r;
 }
+
+Graph Interpreter::makeGraph(const vector<Rule> &rules) {
+    Graph graph(rules.size());
+    // add code to add edges to the graph for the rule dependencies
+    for (unsigned fromID = 0; fromID < rules.size(); fromID++) {
+        Rule fromRule = rules.at(fromID);
+        //cout << "from rule R" << fromID << ": " << fromRule.toString() << endl;
+        for (unsigned pred = 0; pred < fromRule.size(); pred++) {
+            Predicate bodyPred = fromRule.getBodyPredicate(pred);
+            //cout << "from body predicate: " << bodyPred.toString() << endl;
+            for (unsigned toID = 0; toID < rules.size(); toID++) {
+                Rule toRule = rules.at(toID);
+               // cout << "to rule R" << toID << ": " << toRule.toString() << endl;
+
+                if(bodyPred.toString() == toRule.getHeadPredicate().toString()){
+                    //cout << "dependency found: (R" << fromID << ",R" << toID << ")" << endl;
+                    graph.addEdge(fromID, toID);
+                }
+            }
+        }
+    }
+    return graph;
+}

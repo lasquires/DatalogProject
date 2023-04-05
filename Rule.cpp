@@ -15,3 +15,5 @@ string Rule::toString() {
     output += ".";
     return output;
 }
+
+Rule::Rule() {}

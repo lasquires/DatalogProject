@@ -12,6 +12,10 @@ string Predicate::toString() {
     return output;
 }
 
+Predicate::Predicate() {
+    return;
+}
+
 //void Predicate::setName() {
 //
 //}
